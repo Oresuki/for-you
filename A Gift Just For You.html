@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Gift Just For You</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Dancing+Script:wght@500;700&family=Patrick+Hand&display=swap">
+<style>
+:root{
+  --bg1:#fdf1f3;--bg2:#f8c9d2;--ink:#3b1621;--accent:#d6244a;--deep:#7a1030;
+  --card:#fffaf5;--paper:#fbefc9;--line:#e5cf93;--bubble:#fff6ee;--shadow:rgba(122,16,48,.18);
+  --head:'Baloo 2','Trebuchet MS',system-ui,sans-serif;--script:'Dancing Script','Brush Script MT',cursive;--hand:'Patrick Hand','Comic Sans MS',cursive;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2a1018;--bg2:#4a1a2b;--ink:#ffe9ee;--accent:#ff6b8b;--deep:#ffb3c4;--card:#3a1722;--paper:#e9d9a8;--line:#c3ae72;--bubble:#4a2230;--shadow:rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg1:#2a1018;--bg2:#4a1a2b;--ink:#ffe9ee;--accent:#ff6b8b;--deep:#ffb3c4;--card:#3a1722;--paper:#e9d9a8;--line:#c3ae72;--bubble:#4a2230;--shadow:rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--ink);font-family:var(--head);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10}
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.hearts i{position:absolute;bottom:-40px;font-style:normal;opacity:.35;animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg)}}
+.screen{display:none;position:relative;z-index:1;min-height:100%;padding:24px 16px 32px;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.screen.on{display:flex;animation:in .6s ease both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+h1,h2{font-weight:800;color:var(--accent);letter-spacing:.2px}
+h1{font-size:clamp(28px,6vw,44px)}
+h2{font-size:clamp(26px,5vw,38px)}
+.sub{font-weight:600;font-size:clamp(16px,3.5vw,20px)}
+button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.next{background:var(--card);color:var(--accent);font-weight:800;padding:12px 22px;min-height:44px;border-radius:999px;box-shadow:0 4px 14px var(--shadow);transition:transform .2s}
+.next:hover{transform:translateY(-2px)}
+.next:active{transform:scale(.96)}
+/* 1 meter */
+#cat{width:130px;height:130px;transition:transform .3s}
+#cat.bounce{animation:bob .5s ease infinite alternate}
+@keyframes bob{to{transform:translateY(-8px) rotate(3deg)}}
+.q{font-size:clamp(22px,5vw,30px);font-weight:800;min-height:1.3em}
+.pct{font-size:clamp(22px,5vw,30px);font-weight:800;color:var(--deep)}
+.gauge{width:min(360px,86vw)}
+.range{width:min(300px,76vw);height:44px;accent-color:var(--accent);cursor:grab}
+.plane{position:absolute;left:3%;bottom:14%;width:90px;opacity:.9;animation:fly 5s ease-in-out infinite alternate}
+@keyframes fly{to{transform:translate(18px,-14px) rotate(-6deg)}}
+/* 2 gifts */
+.gifts{display:flex;gap:clamp(8px,4vw,40px);flex-wrap:wrap;justify-content:center;margin-top:12px}
+.gift{width:clamp(96px,26vw,170px);padding:6px;border-radius:16px;transition:transform .25s;animation:pop .6s ease both}
+.gift:nth-child(2){animation-delay:.2s}.gift:nth-child(3){animation-delay:.4s}
+@keyframes pop{from{opacity:0;transform:scale(.6)}}
+.gift:hover{transform:translateY(-8px) rotate(-3deg)}
+.gift svg{width:100%;display:block}
+/* 3 bouquet */
+.stage{display:grid;grid-template-columns:1fr minmax(200px,300px) 1fr;gap:18px;align-items:center;width:min(960px,100%)}
+.frame{background:var(--card);border-radius:36px;padding:16px;border:4px solid #ec8b8b;box-shadow:0 10px 30px var(--shadow)}
+.col{display:flex;flex-direction:column;gap:30px}
+.bub{background:var(--bubble);font-family:var(--script);font-size:clamp(18px,3.4vw,24px);font-weight:700;padding:14px 18px;border-radius:20px;box-shadow:0 4px 12px var(--shadow);border:2px solid #f3cdbd;animation:float 4s ease-in-out infinite alternate}
+.bub:nth-child(2){animation-delay:1.2s}.bub:nth-child(3){animation-delay:2.4s}
+@keyframes float{to{transform:translateY(-8px)}}
+@media (max-width:700px){.stage{grid-template-columns:1fr}.frame{order:-1;max-width:300px;margin:auto}.col{gap:12px}}
+/* 4 photo */
+.board{position:relative;width:min(760px,100%);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start;text-align:left}
+.tickets{display:flex;flex-direction:column;gap:10px}
+.tk{font-family:var(--hand);font-size:13px;line-height:1.15;text-align:center;padding:10px 8px;border-radius:6px;border:2px dashed #b99a68;background:#e9d9b4;color:#4a3920;box-shadow:0 3px 8px var(--shadow)}
+.tk:nth-child(1){transform:rotate(-4deg)}.tk:nth-child(2){transform:rotate(2deg)}.tk:nth-child(3){background:#f3b9b2;transform:rotate(-2deg)}
+.tk b{display:block;font-size:16px;letter-spacing:1px}
+.polaroid{background:#fff;padding:14px 14px 0;border-radius:6px;box-shadow:0 12px 30px var(--shadow);position:relative}
+.photo{aspect-ratio:4/3;background:linear-gradient(#8fc3ee,#d8ecf8 62%);position:relative;overflow:hidden}
+.photo i{position:absolute;border-radius:50%}
+.c1{width:34%;height:16%;left:14%;top:14%;background:#fff;opacity:.85;filter:blur(3px)}
+.c2{width:28%;height:12%;right:12%;top:26%;background:#fff;opacity:.8;filter:blur(3px)}
+.h1{width:110%;height:60%;left:-30%;bottom:-32%;background:#8aa04b}
+.h2{width:90%;height:55%;right:-24%;bottom:-30%;background:#6f8a3a}
+.player{display:flex;align-items:center;gap:12px;background:#fff;color:#222;padding:12px 6px;font-family:system-ui,sans-serif}
+.disc{width:44px;height:44px;border-radius:8px;background:#1b1b1b;flex:none}
+.disc.spin{animation:spin 4s linear infinite;border-radius:50%}
+@keyframes spin{to{transform:rotate(360deg)}}
+.meta{flex:1;min-width:0}.meta b{display:block;font-size:14px}.meta small{color:#666}
+.bar{height:4px;background:#ddd;border-radius:4px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#e3506f}
+.bar.go i{animation:prog 30s linear forwards}
+@keyframes prog{to{width:100%}}
+.play{width:44px;height:44px;border-radius:50%;background:#e3506f;color:#fff;font-size:16px}
+.deco{position:absolute;font-size:42px;pointer-events:none}
+@media (max-width:620px){.board{grid-template-columns:1fr}.tickets{flex-direction:row}.tk{flex:1}}
+/* 5 letter */
+.letter{--cw:clamp(96px,20vw,170px);position:relative;width:min(640px,calc(100% - var(--cw)*.85));margin-left:calc(var(--cw)*.85);background-color:var(--paper);color:#2d2411;text-align:left;font-family:var(--hand);font-weight:700;font-size:clamp(16px,3.4vw,21px);line-height:1.5em;padding:1.5em 1.2em 1em 1.4em;border-radius:6px 14px 8px 12px;box-shadow:0 12px 30px var(--shadow),inset 0 0 40px rgba(200,150,50,.3);background-image:repeating-linear-gradient(transparent 0 1.5em,var(--line) 1.5em calc(1.5em + 1px))}
+#s5 h2{align-self:flex-start;font-size:clamp(30px,6vw,46px);text-align:left}
+.letter p{margin:0 0 1.5em;opacity:0;animation:show .8s ease forwards}
+@keyframes show{to{opacity:1}}
+.letter p:nth-child(2){animation-delay:1.2s}.letter p:nth-child(3){animation-delay:2.4s}.letter .sign{animation-delay:3.4s}
+.sign{font-family:var(--script);font-weight:700;color:var(--accent);text-align:right;font-size:clamp(18px,3.6vw,24px);margin:0!important}
+.mini{width:var(--cw);position:absolute;left:calc(var(--cw)*-.85);bottom:-1.2em}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}.letter p{opacity:1}}
+</style>
+</head>
+<body>
+<div class="hearts" aria-hidden="true" id="hearts"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="gift" viewBox="0 0 100 100">
+    <polygon points="50,30 88,44 88,82 50,96 12,82 12,44" fill="#8ecae6" stroke="#3d7fa8" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="50,30 88,44 50,58 12,44" fill="#a9dbf2" stroke="#3d7fa8" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="50,58 50,96 12,82 12,44" fill="#7bb8d9" opacity=".5"/>
+    <polygon points="44,56 56,56 56,95 44,95" fill="#f4a6a0" stroke="#d9746d" stroke-width="1.5"/>
+    <path d="M50 32C36 8 14 14 26 28c8 8 20 4 24 4zM50 32c14-24 36-18 24-4-8 8-20 4-24 4z" fill="#f6b7b0" stroke="#d9746d" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="50" cy="32" r="6" fill="#f08f88" stroke="#d9746d" stroke-width="2"/>
+  </symbol>
+</svg>
+
+<!-- 1 · LOVE METER -->
+<main class="screen on" id="s1">
+  <svg id="cat" viewBox="0 0 120 120" role="img" aria-label="Cat reacting to your answer">
+    <g fill="#fff" stroke="#222" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M40 94Q36 116 48 117H72Q84 116 80 94"/>
+      <path d="M30 52L25 18 50 34Q60 31 70 34L95 18 90 52Q100 72 84 88Q60 100 36 88 20 72 30 52Z"/>
+    </g>
+    <circle cx="46" cy="58" r="4.5" fill="#222"/><circle cx="74" cy="58" r="4.5" fill="#222"/>
+    <path id="mouth" d="M53 70Q60 78 67 70" fill="#f08fa0" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+    <g id="tears" fill="#6cb7f2" opacity="0"><path d="M42 64q-5 10 0 14 5-4 0-14zM78 64q-5 10 0 14 5-4 0-14z"/></g>
+    <g id="sparks" fill="#e3506f" opacity="0"><circle cx="14" cy="40" r="3"/><circle cx="108" cy="34" r="3"/><circle cx="104" cy="74" r="2.5"/><circle cx="16" cy="78" r="2.5"/></g>
+  </svg>
+  <p class="q" id="q" aria-live="polite">How much do you love me?</p>
+  <p class="pct" id="pct">0%</p>
+  <svg class="gauge" viewBox="0 0 200 112" aria-hidden="true">
+    <g id="segs"></g>
+    <text x="100" y="98" text-anchor="middle" font-family="Dancing Script,cursive" font-size="26" font-weight="700" fill="#3b1621">love</text>
+    <path d="M170 76c-4-6-12-2-8 4l8 8 8-8c4-6-4-10-8-4z" fill="#fff" transform="translate(-2,-14) scale(.8)"/>
+    <g id="needle"><line x1="100" y1="100" x2="100" y2="38" stroke="#3b1621" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="100" r="5" fill="#fff" stroke="#3b1621" stroke-width="2"/></g>
+  </svg>
+  <input class="range" id="range" type="range" min="0" max="100" value="0" aria-label="How much do you love me? Drag the slider">
+  <svg class="plane" viewBox="0 0 90 60" aria-hidden="true"><path d="M4 26L84 4 62 56 44 38z" fill="#f7b3c2" stroke="#e58aa0" stroke-width="2" stroke-linejoin="round"/><circle cx="34" cy="30" r="2" fill="#222"/><circle cx="42" cy="30" r="2" fill="#222"/></svg>
+</main>
+
+<!-- 2 · GIFTS -->
+<main class="screen" id="s2">
+  <h1>You passed the love test</h1>
+  <p class="sub">Your surprises are waiting for you</p>
+  <div class="gifts">
+    <button class="gift" data-go="3" aria-label="Open gift 1: your bouquet"><svg viewBox="0 0 100 100"><use href="#gift"/></svg></button>
+    <button class="gift" data-go="4" aria-label="Open gift 2: your memory"><svg viewBox="0 0 100 100"><use href="#gift"/></svg></button>
+    <button class="gift" data-go="5" aria-label="Open gift 3: your letter"><svg viewBox="0 0 100 100"><use href="#gift"/></svg></button>
+  </div>
+  <p class="sub">Tap a gift to open it</p>
+</main>
+
+<!-- 3 · BOUQUET -->
+<main class="screen" id="s3">
+  <h2>Your Bouquet</h2>
+  <div class="stage">
+    <div class="col"><p class="bub">You make my heart bloom.</p><p class="bub">Life feels sweeter with you</p><p class="bub">You make every moment sweeter</p></div>
+    <div class="frame">
+      <svg viewBox="0 0 200 260" role="img" aria-label="Bouquet of red roses">
+        <path d="M30 120L100 250 170 120z" fill="#fff" stroke="#d9c6c6" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M60 130L100 250M140 130L100 250M100 130V250" stroke="#eadada" fill="none"/>
+        <g id="roses"></g>
+        <path d="M100 196C78 210 62 214 56 244M100 196C122 210 138 214 144 244" stroke="#c02a2a" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <circle cx="100" cy="196" r="12" fill="#c02a2a"/>
+      </svg>
+    </div>
+    <div class="col"><p class="bub">I choose you every day</p><p class="bub">My love for you keeps growing</p><p class="bub">My heart will always find you</p></div>
+  </div>
+  <button class="next" data-go="4">Next →</button>
+</main>
+
+<!-- 4 · PHOTO + MUSIC -->
+<main class="screen" id="s4">
+  <h2>Our Memory</h2>
+  <div class="board">
+    <div class="tickets">
+      <div class="tk"><b>LOVE PASS</b>ADMIT ONE<br>TO MY HEART</div>
+      <div class="tk"><b>ROMANCE TICKET</b>SPECIAL DAY<br>NO. 5201314</div>
+      <div class="tk"><b>LOVE NOTE</b>KEEP THIS ♥<br>NO. 000520</div>
+    </div>
+    <div class="polaroid">
+      <div class="photo" role="img" aria-label="Sunny hills under a blue sky"><i class="c1"></i><i class="c2"></i><i class="h1"></i><i class="h2"></i></div>
+      <div class="player">
+        <div class="disc" id="disc"></div>
+        <div class="meta"><b>BIRDS OF A FEATHER</b><small>Billie Eilish</small><div class="bar" id="bar"><i></i></div></div>
+        <button class="play" id="play" aria-label="Play">▶</button>
+      </div>
+      <span class="deco" style="right:-14px;top:-22px">🦋</span>
+      <span class="deco" style="left:-26px;bottom:20px">🌸</span>
+    </div>
+  </div>
+  <button class="next" data-go="5">Next →</button>
+</main>
+
+<!-- 5 · LETTER -->
+<main class="screen" id="s5">
+  <h2>Letter From My Heart</h2>
+  <div class="letter">
+    <p>You make my life feel more beautiful and meaningful, and I feel so lucky to have you. I love you wholeheartedly, and I can’t wait to continue loving you for the rest of my life.</p>
+    <p>You make me smile, you make me feel safe, and you bring so much happiness into my world. I know I tell you this every day, but you truly are the most beautiful person in my eyes.</p>
+    <p>Thank you for being you and for filling my heart with so much love. No matter what happens, I will always choose you.</p>
+    <p class="sign">Always, forever. ♥</p>
+    <svg class="mini" viewBox="0 0 160 170" aria-hidden="true"><g stroke="#2d2411" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M44 112Q40 150 56 160H104Q120 150 116 112z" fill="#fff"/><path d="M36 84L30 40 62 58Q80 54 98 58L130 40 124 84Q128 112 80 118 32 112 36 84z" fill="#fff"/><path d="M36 84L30 40 46 50Q40 66 44 84Q40 90 36 84z" fill="#f6a640"/><path d="M52 84q9-9 18 0M92 84q9-9 18 0M74 96q3 4 6 0q3 4 6 0" fill="none"/><path d="M80 164C46 144 48 114 68 114c7 0 11 4 12 8 1-4 5-8 12-8 20 0 22 30-12 50z" fill="#e0243b" stroke="#7a1020" stroke-width="2.5"/><rect x="40" y="126" width="20" height="32" rx="10" fill="#f6a640"/><rect x="100" y="126" width="20" height="32" rx="10" fill="#fff"/></g><ellipse cx="50" cy="100" rx="7" ry="4" fill="#f5a9b8"/><ellipse cx="110" cy="100" rx="7" ry="4" fill="#f5a9b8"/><g fill="#e0243b" stroke="#7a1020" stroke-width="2"><path d="M100 34c-6-8-16-2-10 5l10 10 10-10c6-7-4-13-10-5z"/><path d="M126 50c-5-7-14-2-9 4l9 9 9-9c5-6-4-11-9-4z"/></g><path d="M70 30c-3-5-9-1-6 3l6 6 6-6c3-4-3-8-6-3z" fill="#2d2411"/></svg>
+  </div>
+  <button class="next" data-go="1">↺ Start again</button>
+</main>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var NS='http://www.w3.org/2000/svg';
+  function show(n){
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});
+    $('#s'+n).classList.add('on');window.scrollTo(0,0);
+    if(n===1){range.value=0;update(0);done=false}
+  }
+  document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(){show(+b.dataset.go)})});
+
+  // floating hearts
+  var h=$('#hearts'),icons=['♥','❤','💗','🌸'];
+  for(var i=0;i<14;i++){var e=document.createElement('i');e.textContent=icons[i%4];
+    e.style.cssText='left:'+(Math.random()*96)+'%;font-size:'+(14+Math.random()*20)+'px;animation-duration:'+(12+Math.random()*14)+'s;animation-delay:-'+(Math.random()*20)+'s';h.appendChild(e)}
+
+  // gauge segments
+  var cols=['#f6d3da','#ef9fb0','#d9566f','#a3223f','#6a0f27'],segs=$('#segs');
+  function pt(r,a){a=Math.PI*(1-a);return(100+r*Math.cos(a)).toFixed(1)+' '+(100-r*Math.sin(a)).toFixed(1)}
+  cols.forEach(function(c,i){
+    var a0=i/5,a1=(i+1)/5,p=document.createElementNS(NS,'path');
+    p.setAttribute('d','M'+pt(92,a0)+'A92 92 0 0 1 '+pt(92,a1)+'L'+pt(54,a1)+'A54 54 0 0 0 '+pt(54,a0)+'Z');
+    p.setAttribute('fill',c);p.setAttribute('stroke','#fffaf5');p.setAttribute('stroke-width','2');segs.appendChild(p)});
+
+  // roses
+  var R=$('#roses'),pos=[[100,40],[70,58],[130,58],[48,86],[100,76],[152,86],[76,98],[124,98],[100,112],[60,118],[140,118]];
+  pos.forEach(function(p,i){
+    var g=document.createElementNS(NS,'g');
+    g.innerHTML='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="24" fill="#c42a2a" stroke="#7a1414" stroke-width="2"/><path d="M'+(p[0]-12)+' '+p[1]+'q12-16 24 0M'+(p[0]-7)+' '+(p[1]+7)+'q7-10 14 0" stroke="#7a1414" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="'+p[0]+'" cy="'+(p[1]-2)+'" r="5" fill="#e04848"/>';
+    R.appendChild(g)});
+  [[34,100,-30],[166,100,30],[42,128,-50],[158,128,50]].forEach(function(l){
+    var e=document.createElementNS(NS,'path');e.setAttribute('d','M0 0Q14-22 28 0Q14 22 0 0Z');
+    e.setAttribute('fill','#4f7a2f');e.setAttribute('transform','translate('+l[0]+','+l[1]+') rotate('+l[2]+')');R.insertBefore(e,R.firstChild)});
+
+  // love meter
+  var range=$('#range'),done=false,cat=$('#cat'),mouth=$('#mouth');
+  var moods={sad:'M53 74Q60 66 67 74',flat:'M53 72H67',smile:'M53 70Q60 78 67 70',big:'M52 68Q60 84 68 68Z'};
+  function update(v){
+    var q,m;v=+v;
+    if(v===0){q='How much do you love me?';m='smile'}
+    else if(v<40){q='Only that much?';m='sad'}
+    else if(v<70){q='Half? Seriously?';m='flat'}
+    else if(v<100){q='Aww, that’s more like it!';m='smile'}
+    else{q='Correct answer!';m='big'}
+    $('#q').textContent=q;$('#pct').textContent=(v>=100?1000:v)+'%';
+    mouth.setAttribute('d',moods[m]);
+    $('#tears').setAttribute('opacity',m==='sad'?1:0);
+    $('#sparks').setAttribute('opacity',v>=100?1:0);
+    cat.classList.toggle('bounce',v>=100);
+    $('#needle').setAttribute('transform','rotate('+(-90+v*1.8)+' 100 100)');
+    if(v>=100&&!done){done=true;setTimeout(function(){if(done)show(2)},1800)}
+  }
+  update(0);
+  range.addEventListener('input',function(){update(range.value)});
+
+  // music player (visual only — no audio file is bundled)
+  var playing=false;
+  var song = new Audio('feather.mp3');
+  $('#play').addEventListener('click',function(){
+    playing=!playing;this.textContent=playing?'❚❚':'▶';this.setAttribute('aria-label',playing?'Pause':'Play');
+    playing ? song.play() : song.pause();
+    $('#disc').classList.toggle('spin',playing);$('#bar').classList.toggle('go',playing);
+    if(!playing){var f=$('#bar i');f.style.width=getComputedStyle(f).width}
+  });
+})();
+</script>
+</body>
+</html>
